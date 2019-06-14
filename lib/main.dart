@@ -20,6 +20,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        "new_page": (context) => NewRoute(),
+        "echo_page": (context) => EchoRoute()
+      },
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -98,6 +102,24 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
+            FlatButton(
+              child: Text("open new route"),
+              textColor: Colors.blue,
+              onPressed: () {
+                Navigator.pushNamed(context, "new_page");
+//                Navigator.push(context,
+//                new MaterialPageRoute(builder: (context){
+//                  return NewRoute();
+//                }));
+              },
+            ),
+            FlatButton(
+              child: Text("through args"),
+              textColor: Colors.yellow,
+              onPressed: () {
+                Navigator.of(context).pushNamed("echo_page", arguments: "test");
+              },
+            ),
           ],
         ),
       ),
@@ -109,3 +131,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class NewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New Route"),
+      ),
+      body: Center(
+        child: Text("This is new route"),
+      ),
+    );
+  }
+}
+
+class EchoRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var args = ModalRoute.of(context).settings.arguments;
+    print(args);
+    return Text("this is an example get args");
+  }
+}
+
